@@ -1,12 +1,9 @@
 # streamlit_app.py 
 
- 
-
 import streamlit as st 
-
 import snowflake.connector 
-
- 
+import pandas as pd
+import datetime
 
 # Initialize connection. 
 
@@ -15,14 +12,10 @@ import snowflake.connector
 @st.experimental_singleton 
 
 def init_connection(): 
-
     return snowflake.connector.connect(**st.secrets["snowflake"]) 
-
- 
 
 conn = init_connection() 
 
- 
 
 # Perform query. 
 
@@ -33,19 +26,29 @@ conn = init_connection()
 def run_query(query): 
 
     with conn.cursor() as cur: 
-
         cur.execute(query) 
-
         return cur.fetchall() 
 
- 
+#TEMP AND PRECIP ON A SINGlE GRAPH
+# data = pd.read_sql_query("SELECT \"Precipitation, Total\" as \"Total Precipitation\", \"Temperature, Mean (°C)\" as \"Average Temperature\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+# st.title("Total Precipitation and Average Temperature in the United States")
+# st.line_chart(data, use_container_width=True) 
+# st.dataframe(data)
 
-rows = run_query("SELECT * from mytable;") 
+# GET SEPARATE PRECIP AND TEMP DATA WITH TIME
+precipData = pd.read_sql_query("SELECT \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+# tempData = pd.read_sql_query("SELECT \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+# time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 
- 
+st.title("Total Precipitation vs. Time")
+st.line_chart(precipData)
+
+# READ LATITUDE & LONGITUDE
+# lat = pd.read_sql_query("SELECT \"Station Latitude\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+# lon = pd.read_sql_query("SELECT \"Station Longitude\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+
 
 # Print results. 
 
-for row in rows: 
-
-    st.write(f"{row[0]} has a :{row[1]}:")
+# for row in tempData: 
+#     st.write(f"{row[0]} Temperature: {row[1]}")
