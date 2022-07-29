@@ -33,7 +33,7 @@ def run_query(query):
 # data = pd.read_sql_query("SELECT \"Precipitation, Total\" as \"Total Precipitation\", \"Temperature, Mean (°C)\" as \"Average Temperature\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 # st.title("Total Precipitation and Average Temperature in the United States")
 # st.line_chart(data, use_container_width=True) 
-# st.dataframe(data)s
+# st.dataframe(data)t
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 precipData = pd.read_sql_query("SELECT \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
