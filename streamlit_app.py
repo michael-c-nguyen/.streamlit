@@ -36,12 +36,17 @@ def run_query(query):
 # st.dataframe(data)t
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
-precipData = pd.read_sql_query("SELECT \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+precipData = pd.read_sql_query("SELECT \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 # tempData = pd.read_sql_query("SELECT \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
-# time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 
+time['Time'] = pd.to_datetime(time['Time'])
+time['Time'].astype('datetime64').astype(int).astype(float)
+# print(type(time))
+# print(time)
+data = pd.concat([precipData, time], axis = 1)
 st.title("Total Precipitation vs. Time")
-st.line_chart(precipData)
+st.line_chart(pd.DataFrame(data))
 
 # READ LATITUDE & LONGITUDE
 # lat = pd.read_sql_query("SELECT \"Station Latitude\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
