@@ -37,16 +37,24 @@ def run_query(query):
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 precipData = pd.read_sql_query("SELECT \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
-# tempData = pd.read_sql_query("SELECT \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
+tempData = pd.read_sql_query("SELECT \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 
-time['Time'] = pd.to_datetime(time['Time'])
-time['Time'].astype('datetime64').astype(int).astype(float)
-# print(type(time))
-# print(time)
-data = pd.concat([precipData, time], axis = 1)
-st.title("Total Precipitation vs. Time")
-st.line_chart(pd.DataFrame(data))
+precip = pd.DataFrame({
+  'date': time['Time'],
+  'Precipitation': precipData['Precipitation, Total']
+})
+precip = precip.rename(columns={'date':'index'}).set_index('index')
+st.title("Total Precipitation vs. Time in the US")
+st.line_chart(precip)
+
+temp = pd.DataFrame({
+  'date': time['Time'],
+  'Temperature in °C': tempData['Temperature, Mean (°C)']
+})
+temp = temp.rename(columns={'date':'index'}).set_index('index')
+st.title("Average Temperature vs. Time in the US")
+st.line_chart(temp)
 
 # READ LATITUDE & LONGITUDE
 # lat = pd.read_sql_query("SELECT \"Station Latitude\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
