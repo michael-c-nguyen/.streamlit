@@ -4,6 +4,8 @@ import pandas as pd
 import datetime
 import time
 import numpy as np
+import matplotlib as plt
+from sklearn.linear_model import LinearRegression
 
 # Initialize connection. 
 
@@ -50,6 +52,17 @@ precip = pd.DataFrame({
 precip = precip.rename(columns={'date':'index'}).set_index('index')
 st.header("Total Precipitation vs. Time in " + choice)
 st.line_chart(precip)
+
+linear_regressor = LinearRegression()  # create object for the class
+linear_regressor.fit(precip['index'], precip['Precipitation'])  # perform linear regression
+Y_pred = linear_regressor.predict(precip['index'])  # make predictions
+
+plt.scatter(precip['index'], precip['Precipitation'])
+plt.plot(precip['index'], Y_pred, color='red')
+plt.show()
+
+
+
 
 temp = pd.DataFrame({
   'date': time['Time'],
