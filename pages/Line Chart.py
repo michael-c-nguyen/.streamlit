@@ -1,5 +1,3 @@
-# streamlit_app.py 
-
 import streamlit as st 
 import snowflake.connector 
 import pandas as pd
@@ -31,14 +29,7 @@ def run_query(query):
         cur.execute(query) 
         return cur.fetchall() 
 
-# READ LATITUDE & LONGITUDE
-location = pd.read_sql_query("SELECT DISTINCT ROUND( \"Station Latitude\", 8) AS lat, ROUND(\"Station Longitude\", 8) AS lon from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = 'USA';", conn)
 
-location = location.rename(columns={'LAT':'lat'})
-location = location.rename(columns={'LON':'lon'})
-
-st.header("Station Maps")
-st.map(location)
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 options = pd.read_sql_query("SELECT DISTINCT \"Country\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\";", conn)
@@ -46,7 +37,6 @@ choice = st.selectbox("Choose a country", options)
 with st.spinner(text='In progress'):
   time.sleep(2)
   st.snow() 
-  st.balloons()
   st.success("Data for "+ choice + " loaded successfully!")
 
 precipData = pd.read_sql_query("SELECT \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + ";", conn)
