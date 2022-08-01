@@ -1,3 +1,3 @@
 import streamlit as st
-
-st.image("/workspace/.streamlit/E119601.jpg", "Michael Nguyen")
+st.header("Hello!")
+st.image("Michael.jpg", "Michael Nguyen", width = 200)
