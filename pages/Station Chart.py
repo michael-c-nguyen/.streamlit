@@ -36,5 +36,5 @@ location = pd.read_sql_query("SELECT DISTINCT ROUND( \"Station Latitude\", 8) AS
 location = location.rename(columns={'LAT':'lat'})
 location = location.rename(columns={'LON':'lon'})
 
-st.header("Station Maps")
+st.header("Weather Station Maps")
 st.map(location)
