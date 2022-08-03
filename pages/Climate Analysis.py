@@ -40,15 +40,15 @@ with st.spinner(text='In progress'):
   st.snow() 
   st.success("Data for "+ choice + " loaded successfully!")
 
-precipData = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Station\";", conn)
-tempData = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Station\";", conn)
+precipData = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
+tempData = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 sunData = pd.read_sql_query("SELECT MAX(\"Sunshine, Total\") as \"Sunshine, Total\"  from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + ";", conn)
 
 # LINEAR REGRESSION QUERY
-precipAndTime = pd.read_sql_query("SELECT \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + ";", conn)
-tempAndTime = pd.read_sql_query("SELECT \"Temperature, Mean (°C)\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + ";", conn)
-sunAndTime = pd.read_sql_query("SELECT \"Sunshine, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + ";", conn)
+precipAndTime = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
+tempAndTime = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
+sunAndTime = pd.read_sql_query("SELECT MAX(\"Sunshine, Total\") as \"Sunshine, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 
 # SUNSHINE ANALYSIS
 sun = pd.DataFrame({
@@ -79,8 +79,8 @@ model.fit(X, y)
 timeDropped = sunAndTime['Time'].drop(index)
 sun_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Sunshine Total"])
 
-with st.expander("View Linear Regression Model"):
-  st.subheader("Linear Regression of Total Sunshine in " + choice)
+with st.expander("View Linear Regression Model for Max Total Sunshine"):
+  st.subheader("Linear Regression of Max Total Sunshine in " + choice)
   st.line_chart(sun_pred)
 
 
@@ -91,7 +91,7 @@ precip = pd.DataFrame({
 })
 
 precip = precip.rename(columns={'Date':'index'}).set_index('index')
-st.subheader("Max Total Precipitation vs. Time (per station) in " + choice)
+st.subheader("Max Total Precipitation vs. Time (per day) in " + choice)
 st.bar_chart(precip)
 
 # LINEAR REGRESSION OF PRECIPITATION
@@ -113,8 +113,8 @@ model.fit(X, y)
 timeDropped = precipAndTime['Time'].drop(index)
 precip_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Preciptation Total (mm)"])
 
-with st.expander("View Linear Regression Model"):
-  st.subheader("Linear Regression of Precipitation in " + choice)
+with st.expander("View Linear Regression Model for Max Total Precipitation"):
+  st.subheader("Linear Regression of Max Total Precipitation in " + choice)
   st.line_chart(precip_pred)
 
 # TEMPERATURE ANALYSIS
@@ -123,7 +123,7 @@ temp = pd.DataFrame({
   'Temperature in °C': tempData['Temperature, Mean (°C)']
 })
 temp = temp.rename(columns={'date':'index'}).set_index('index')
-st.subheader("Max Average Temperature vs. Time (per station) in " + choice)
+st.subheader("Max Average Temperature vs. Time (per day) in " + choice)
 st.bar_chart(temp)
 
 # LINEAR REGRESSION OF TEMPERATURE
@@ -143,8 +143,8 @@ model = LinearRegression()
 model.fit(X, y)
 
 timeDropped = precipAndTime['Time'].drop(index)
-temp_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Temperature, Mean (°C)"])
+temp_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Temperature in °C"])
 
-with st.expander("View Linear Regression Model"):
-  st.subheader("Linear Regression of Average Temperature in " + choice)
+with st.expander("View Linear Regression Model for Max Average Temperature"):
+  st.subheader("Linear Regression of Max Average Temperature in " + choice)
   st.line_chart(temp_pred)
