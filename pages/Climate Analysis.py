@@ -79,7 +79,7 @@ model.fit(X, y)
 timeDropped = sunAndTime['Time'].drop(index)
 sun_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Sunshine Total"])
 
-with st.expander("View Linear Regression Model for Max Total Sunshine"):
+with st.expander("View LR Model for Max Total Sunshine"):
   st.subheader("Linear Regression of Max Total Sunshine in " + choice)
   st.line_chart(sun_pred)
 
@@ -113,7 +113,7 @@ model.fit(X, y)
 timeDropped = precipAndTime['Time'].drop(index)
 precip_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Preciptation Total (mm)"])
 
-with st.expander("View Linear Regression Model for Max Total Precipitation"):
+with st.expander("View LR Model for Max Total Precipitation"):
   st.subheader("Linear Regression of Max Total Precipitation in " + choice)
   st.line_chart(precip_pred)
 
@@ -145,6 +145,6 @@ model.fit(X, y)
 timeDropped = precipAndTime['Time'].drop(index)
 temp_pred = pd.DataFrame(model.predict(X), timeDropped, columns= ["Temperature in °C"])
 
-with st.expander("View Linear Regression Model for Max Average Temperature"):
+with st.expander("View LR Model for Max Average Temperature"):
   st.subheader("Linear Regression of Max Average Temperature in " + choice)
   st.line_chart(temp_pred)
