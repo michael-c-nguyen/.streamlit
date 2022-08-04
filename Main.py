@@ -12,5 +12,4 @@ with col1:
 
 with col2:
     st.image("Jackie.jpg", "Jackie Driscoll", width = 200)
-    st.write("Sruti Bandaru")
-    # st.image("", "Sruti Bandaru", width = 200)
+    st.image("Sruti.png", "Sruti Bandaru", width = 200)
