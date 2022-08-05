@@ -34,7 +34,7 @@ def run_query(query):
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 options = pd.read_sql_query("SELECT DISTINCT \"Country\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\";", conn)
-choice = st.selectbox("Choose a country", options)
+choice = st.selectbox("Choose a country", options, index = 111)
 with st.spinner(text='In progress'):
   time.sleep(1)
   st.snow() 
@@ -48,14 +48,13 @@ time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg
 # LINEAR REGRESSION QUERY
 precipAndTime = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 tempAndTime = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
-sunAndTime = pd.read_sql_query("SELECT MAX(\"Sunshine, Total\") as \"Sunshine, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
+sunAndTime = pd.read_sql_query("SELECT MAX(\"Sunshine, Total\") AS \"Sunshine, Total\" , \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" WHERE \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 
 # SUNSHINE ANALYSIS
 sun = pd.DataFrame({
   'Date': time['Time'],
   'Sunshine Total': sunData['Sunshine, Total'],
 })
-
 sun = sun.rename(columns={'Date':'index'}).set_index('index')
 st.subheader("Max Total Sunshine vs Time (per day) in " + choice)
 st.bar_chart(sun)
