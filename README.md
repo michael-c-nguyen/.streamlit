@@ -3,6 +3,8 @@
 ### Knoema
 ### Title: Monthly Climatic Data for the World
 
+# Instructions: 
+
 ### In order to run the program, you need a Snowflake account and follow the
 ### template below. Note that the databases will also be required to run the
 ### program
