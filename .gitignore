@@ -1,1 +1,4 @@
+# This ignores my streamlit directory with sensitive information for
+# my snowflake account
 /.streamlit
+
