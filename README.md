@@ -5,9 +5,9 @@
 
 # Instructions: 
 
-### In order to run the program, you need a Snowflake account and follow the
-### template below. Note that the databases will also be required to run the
-### program
+In order to run the program, you need a Snowflake account and follow the
+template below. Note that the databases will also be required to run the
+program
 
 ### [snowflake] 
 
