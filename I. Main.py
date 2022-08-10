@@ -1,4 +1,7 @@
 import streamlit as st
+st.title('Airline and Climate Analysis: Snowflake and Streamlit Demo')
+st.image("Hump Jupiter (XS)_jpg.jpg")
+
 
 st.balloons()
 st.header("Meet the Snowflake Soldiers!")
@@ -13,3 +16,4 @@ with col1:
 with col2:
     st.image("Jackie.jpg", "Jackie Driscoll", width = 200)
     st.image("Sruti.png", "Sruti Bandaru", width = 200)
+

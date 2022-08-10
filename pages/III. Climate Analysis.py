@@ -35,8 +35,7 @@ def run_query(query):
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 options = pd.read_sql_query("SELECT DISTINCT \"Country\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\";", conn)
 choice = st.selectbox("Choose a country", options, index = 14)
-with st.spinner(text='In progress'):
-  st.snow() 
+with st.spinner(text='In progress'): 
   st.success("Data for "+ choice + " loaded successfully!")
 
 precipData = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
