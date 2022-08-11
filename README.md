@@ -6,10 +6,10 @@ program.
 
 # Datasets:
 
-### Provider: Knoema
+### * Provider: Knoema
 ### Title: Monthly Climatic Data for the World
 
-### Provider: OAG
+### * Provider: OAG
 ### Title: OAG: Global Airline Schedules
 
 # Instructions:

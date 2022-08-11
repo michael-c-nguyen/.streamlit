@@ -34,9 +34,13 @@ def run_query(query):
 
 # GET SEPARATE PRECIP AND TEMP DATA WITH TIME
 options = pd.read_sql_query("SELECT DISTINCT \"Country\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\";", conn)
-choice = st.selectbox("Choose a country", options, index = 14)
+choice = st.selectbox("Choose a country", options, index = 100)
 with st.spinner(text='In progress'): 
   st.success("Data for "+ choice + " loaded successfully!")
+
+# Get Index of USA
+index = options[options['Country'] == 'USA'].index[0]
+print("********** " + str(index) + " **********")
 
 precipData = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 tempData = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
@@ -47,10 +51,6 @@ time = pd.read_sql_query("SELECT \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg
 precipAndTime = pd.read_sql_query("SELECT MAX(\"Precipitation, Total\") as \"Precipitation, Total\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 tempAndTime = pd.read_sql_query("SELECT MAX(\"Temperature, Mean (°C)\") as \"Temperature, Mean (°C)\", \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" where \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
 sunAndTime = pd.read_sql_query("SELECT MAX(\"Sunshine, Total\") AS \"Sunshine, Total\" , \"Time\" from WEATHER.KNMCD_DATA_PACK.\"zdqkepg\" WHERE \"Country\" = " + "\'" + choice + "\'" + "GROUP BY \"Time\";", conn)
-
-# Get Index of USA
-index = options[options['Country'] == 'USA'].index[0]
-
 
 # SUNSHINE ANALYSIS
 sun = pd.DataFrame({
