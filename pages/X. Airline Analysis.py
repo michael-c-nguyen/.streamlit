@@ -29,24 +29,26 @@ def run_query(query):
 
 st.subheader("Total Airline Departure Trends per Day in a Month")
 country = pd.read_sql_query("SELECT DISTINCT(DEPCTRY) from AIRLINE.PUBLIC.OAG_SCHEDULE;", conn)
-choice = st.selectbox("Country", country, index = 139)
+choice = st.selectbox("Country", country, index = 120)
 
 city = pd.read_sql_query("SELECT DISTINCT(DEPCITY) from AIRLINE.PUBLIC.OAG_SCHEDULE WHERE DEPCTRY = " + "\'" + choice + "\'" + ";", conn)
-cityChoice = st.selectbox("City", city, index = 197)
+cityChoice = st.selectbox("City", city, index = 123)
 
-data = pd.read_sql_query("SELECT COUNT(DEPCITY) AS CD, FLIGHT_DATE FROM AIRLINE.PUBLIC.OAG_SCHEDULE WHERE DEPCTRY = " + "\'" + choice + "\'" + " AND DEPCITY = " + "\'" + cityChoice + "\'" + " GROUP BY FLIGHT_DATE;", conn)
-
-distance = pd.read_sql_query("SELECT SUM(DISTANCE) AS DISTANCE, FLIGHT_DATE " +
-"FROM AIRLINE.PUBLIC.OAG_SCHEDULE " +
-"WHERE DEPCTRY = " + "\'" + choice + "\'" + " AND DEPCITY = " + "\'" + cityChoice + "\'" + "GROUP BY FLIGHT_DATE;", conn)
-
-# Get Index of the United States
+# Run lines 37 - 43 to see the index of the United States
 indexCtry = country[country['DEPCTRY'] == 'US'].index[0]
 indexCity = city[city['DEPCITY'] == 'SNA'].index[0]
 print("\n*********************************")
 print("Country: " + str(indexCtry))
 print("City: "  + str(indexCity))
 print("*********************************\n")
+
+
+
+data = pd.read_sql_query("SELECT COUNT(DEPCITY) AS CD, FLIGHT_DATE FROM AIRLINE.PUBLIC.OAG_SCHEDULE WHERE DEPCTRY = " + "\'" + choice + "\'" + " AND DEPCITY = " + "\'" + cityChoice + "\'" + " GROUP BY FLIGHT_DATE;", conn)
+
+distance = pd.read_sql_query("SELECT SUM(DISTANCE) AS DISTANCE, FLIGHT_DATE " +
+"FROM AIRLINE.PUBLIC.OAG_SCHEDULE " +
+"WHERE DEPCTRY = " + "\'" + choice + "\'" + " AND DEPCITY = " + "\'" + cityChoice + "\'" + "GROUP BY FLIGHT_DATE;", conn)
 
 # enumerate returns the key-value pairs for EACH FLIGHT_DATE
 for i, val in enumerate(data['FLIGHT_DATE']):
