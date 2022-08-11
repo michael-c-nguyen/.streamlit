@@ -18,6 +18,8 @@ Create a `.streamlit` folder with a `secrets.toml` file in the directory. Inside
 the `secrets.toml` file, place the following code from below with your information.
 One database and schema is okay.
 
+* Run the program from the command line using `streamlit run "I. Main.py"`
+
 ### [snowflake] 
 
 ### user = "xxx" 
